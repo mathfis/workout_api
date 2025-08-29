@@ -1,83 +1,226 @@
-# FastAPI
-### Quem é o FastAPi?
-Framework FastAPI, alta performance, fácil de aprender, fácil de codar, pronto para produção.
-FastAPI é um moderno e rápido (alta performance) framework web para construção de APIs com Python 3.6 ou superior, baseado nos type hints padrões do Python.
+# 🏋️ Workout API - API de Competição de CrossFit
 
-### Async
-Código assíncrono apenas significa que a linguagem tem um jeito de dizer para o computador / programa que em certo ponto, ele terá que esperar por algo para finalizar em outro lugar
+## 📋 Sobre o Projeto
 
-# Projeto
-## WorkoutAPI
+A WorkoutAPI é uma API para gerenciamento de competições de CrossFit, desenvolvida com FastAPI para fornecer alta performance e facilidade de uso. A API permite o gerenciamento completo de atletas, categorias e centros de treinamento.
 
-Esta é uma API de competição de crossfit chamada WorkoutAPI (isso mesmo rs, eu acabei unificando duas coisas que gosto: codar e treinar). É uma API pequena, devido a ser um projeto mais hands-on e simplificado nós desenvolveremos uma API de poucas tabelas, mas com o necessário para você aprender como utilizar o FastAPI.
+## 🚀 Funcionalidades
 
-## Modelagem de entidade e relacionamento - MER
-![MER](/mer.jpg "Modelagem de entidade e relacionamento")
+### ✅ Implementadas
+- **CRUD Completo** para Atletas, Categorias e Centros de Treinamento
+- **Query Parameters** para filtros avançados
+- **Paginação Automática** com fastapi-pagination
+- **Responses Customizados** com relacionamentos
+- **Tratamento de Exceções** específico para erros de integridade
+- **Validação de Dados** com Pydantic
+- **Documentação Interativa** automática
 
-## Stack da API
+### 📊 Endpoints Disponíveis
 
-A API foi desenvolvida utilizando o `fastapi` (async), junto das seguintes libs: `alembic`, `SQLAlchemy`, `pydantic`. Para salvar os dados está sendo utilizando o `postgres`, por meio do `docker`.
+#### 🏃 Atletas (`/alunos`)
+```http
+GET    /alunos?nome=João&cpf=12345678900
+GET    /alunos/{id}
+POST   /alunos
+PUT    /alunos/{id}
+DELETE /alunos/{id}
+```
+```http
+```
 
-## Execução da API
+🏆 Categorias (/categorias)
+```http
+GET    /categorias?nome=Iniciante
+GET    /categorias/{id}
+POST   /categorias
+PUT    /categorias/{id}
+DELETE /categorias/{id}
+```
+🏟️ Centros de Treinamento (/centros)
+```http
+GET    /centros?nome=Academia&proprietario=João
+GET    /centros/{id}
+POST   /centros
+PUT    /centros/{id}
+DELETE /centros/{id}
+```
 
-Para executar o projeto, utilizei a [pyenv](https://github.com/pyenv/pyenv), com a versão 3.11.4 do `python` para o ambiente virtual.
 
-Caso opte por usar pyenv, após instalar, execute:
+🛠️ Tecnologias Utilizadas
+- *Python 3.11+*
+- *FastAPI* - Framework web moderno e rápido
+- *SQLAlchemy* - ORM para banco de dados
+- *SQLite* - Banco de dados para desenvolvimento
+- *Pydantic* - Validação de dados e serialização
+- *fastapi-pagination* - Paginação automática
+- *Uvicorn* - Servidor ASGI
+
+📦 Instalação e Configuração
+Pré-requisitos
+- Python 3.11 ou superior
+- pip (gerenciador de pacotes Python)
+
+--
+
+#### 1. Clone o repositório
 
 ```bash
-pyenv virtualenv 3.11.4 workoutapi
-pyenv activate workoutapi
+git clone <url-do-repositorio>
+cd workout_api
+```
+
+#### 2. Crie e ative o ambiente virtual
+```bash
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+```
+
+#### 3.  Instale as dependências
+```bash
 pip install -r requirements.txt
 ```
-Para subir o banco de dados, caso não tenha o [docker-compose](https://docs.docker.com/compose/install/linux/) instalado, faça a instalação e logo em seguida, execute:
-
+#### 4. Execute a aplicação
 ```bash
-make run-docker
-```
-Para criar uma migration nova, execute:
-
-```bash
-make create-migrations d="nome_da_migration"
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Para criar o banco de dados, execute:
+
+
+### 🌐 Acessando a API
+
+A API estará disponível em:
+
+- API Local: http://localhost:8000
+
+- Documentação Interativa: http://localhost:8000/docs
+
+- Documentação Alternativa: http://localhost:8000/redoc
+
+
+### 📝 Exemplos de Uso
+Criar um Atleta
 
 ```bash
-make run-migrations
+curl -X POST "http://localhost:8000/alunos" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "João Silva",
+    "cpf": "12345678900",
+    "idade": 25,
+    "peso": 75.5,
+    "altura": 1.80,
+    "sexo": "M",
+    "centro_treinamento_id": 1,
+    "categoria_id": 1
+  }'
 ```
 
-## API
+Listar Atletas com Filtros
 
-Para subir a API, execute:
 ```bash
-make run
+curl "http://localhost:8000/alunos?nome=João&page=1&size=10"
 ```
-e acesse: http://127.0.0.1:8000/docs
+Buscar Atleta por ID
+```bash
+curl "http://localhost:8000/alunos/1"
+```
+### 🗃️ Estrutura do Banco de Dados
 
-# Desafio Final
-    - adicionar query parameters nos endpoints
-        - atleta
-            - nome
-            - cpf
-    - customizar response de retorno de endpoints
-        - get all
-            - atleta
-                - nome
-                - centro_treinamento
-                - categoria
-    - Manipular exceção de integridade dos dados em cada módulo/tabela
-        - sqlalchemy.exc.IntegrityError e devolver a seguinte mensagem: “Já existe um atleta cadastrado com o cpf: x”
-        - status_code: 303
-    - Adicionar paginação utilizando a lib: fastapi-pagination
-        - limit e offset
-# Referências
+Diagrama de Entidade-Relacionamento
+```text
+CentroTreinamento (1) -- (N) Categoria (1) -- (N) Aluno
+```
 
-FastAPI: https://fastapi.tiangolo.com/
+Tabelas
+- centro_treinamento: Centros de treinamento
+- categoria: Categorias de competição
+- aluno: Atletas participantes
 
-Pydantic: https://docs.pydantic.dev/latest/
+### ⚙️ Variáveis de Ambiente
+Crie um arquivo .env na raiz do projeto:
 
-SQLAlchemy: https://docs.sqlalchemy.org/en/20/
+```bash
+DATABASE_URL=sqlite:///./workout.db
+```
 
-Alembic: https://alembic.sqlalchemy.org/en/latest/
+### 🚨 Tratamento de Erros
+A API retorna códigos de status HTTP apropriados:
 
-Fastapi-pagination: https://uriyyo-fastapi-pagination.netlify.app/
+- 200 OK - Requisição bem-sucedida
+
+- 201 Created - Recurso criado com sucesso
+
+- 303 See Other - CPF duplicado (erro de integridade)
+
+- 404 Not Found - Recurso não encontrado
+
+- 422 Unprocessable Entity - Erro de validação
+
+### 📊 Paginação
+Todos os endpoints de listagem suportam paginação automática:
+
+```http
+GET /alunos?page=1&size=20
+```
+Resposta paginada:
+```json
+{
+  "items": [...],
+  "total": 100,
+  "page": 1,
+  "size": 20,
+  "pages": 5
+}
+```
+### 🔧 Desenvolvimento
+Estrutura do Projeto
+```text
+workout_api/
+├── app/
+│   ├── main.py
+│   ├── database.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── routes/
+│   │   ├── alunos.py
+│   │   ├── categorias.py
+│   │   └── centros_treinamento.py
+│   └── core/
+│       └── config.py
+├── requirements.txt
+├── .env
+└── README.md
+```
+
+Comandos Úteis
+
+```bash
+# Executar testes
+python -m pytest
+
+# Verificar qualidade do código
+pylint app/
+
+# Formatar código
+black app/
+```
+
+###
+🤝 Contribuição
+1. Faça um fork do projeto
+
+2. Crie uma branch para sua feature (git checkout -b feature/AmazingFeature)
+
+3. Commit suas mudanças (git commit -m 'Add some AmazingFeature')
+
+4. Push para a branch (git push origin feature/AmazingFeature)
+
+5. Abra um Pull Request
+
+
+## 📄 Licença
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
