@@ -1,226 +1,73 @@
 # 🏋️ Workout API - API de Competição de CrossFit
 
-## 📋 Sobre o Projeto
+## 🎯 Visão Geral e Objetivo da Refatoração
+A WorkoutAPI é um Microservice RESTful para gerenciamento de competições de CrossFit. Este repositório está em processo de refatoração para se tornar um projeto de portfólio de nível profissional, focado em Arquitetura Orientada a Domínio (SoC), Qualidade de Código e Containerização.
 
-A WorkoutAPI é uma API para gerenciamento de competições de CrossFit, desenvolvida com FastAPI para fornecer alta performance e facilidade de uso. A API permite o gerenciamento completo de atletas, categorias e centros de treinamento.
+## O Processo de Refatoração
+O projeto original, que possuía uma estrutura monolítica, foi completamente reestruturado. A refatoração tem como foco garantir os seguintes resultados:
 
-## 🚀 Funcionalidades
+Arquitetura: Aplicar o padrão de Separação de Responsabilidades (SoC), implementando as camadas de Serviço e Repositório para isolar a Lógica de Negócio da Persistência.
 
-### ✅ Implementadas
-- **CRUD Completo** para Atletas, Categorias e Centros de Treinamento
-- **Query Parameters** para filtros avançados
-- **Paginação Automática** com fastapi-pagination
-- **Responses Customizados** com relacionamentos
-- **Tratamento de Exceções** específico para erros de integridade
-- **Validação de Dados** com Pydantic
-- **Documentação Interativa** automática
+Qualidade de Código: Implementar Tipagem Rigorosa (Type Hinting) e gerenciar configurações com Pydantic Settings.
 
-### 📊 Endpoints Disponíveis
+Containerização: Criar uma solução completa de Docker Compose (API + PostgreSQL).
 
-#### 🏃 Atletas (`/alunos`)
-```http
-GET    /alunos?nome=João&cpf=12345678900
-GET    /alunos/{id}
-POST   /alunos
-PUT    /alunos/{id}
-DELETE /alunos/{id}
-```
-```http
-```
+___________________________________________________________________________________________
 
-🏆 Categorias (/categorias)
-```http
-GET    /categorias?nome=Iniciante
-GET    /categorias/{id}
-POST   /categorias
-PUT    /categorias/{id}
-DELETE /categorias/{id}
-```
-🏟️ Centros de Treinamento (/centros)
-```http
-GET    /centros?nome=Academia&proprietario=João
-GET    /centros/{id}
-POST   /centros
-PUT    /centros/{id}
-DELETE /centros/{id}
-```
+## 🏗️ Estrutura Arquitetural Atual (Refatoração Concluída: 1/3)
 
+A primeira etapa da refatoração, a organização estrutural e modular, está concluída. O código foi rearranjado para separar as preocupações em camadas lógicas.
 
-🛠️ Tecnologias Utilizadas
-- *Python 3.11+*
-- *FastAPI* - Framework web moderno e rápido
-- *SQLAlchemy* - ORM para banco de dados
-- *SQLite* - Banco de dados para desenvolvimento
-- *Pydantic* - Validação de dados e serialização
-- *fastapi-pagination* - Paginação automática
-- *Uvicorn* - Servidor ASGI
+<br>
 
-📦 Instalação e Configuração
-Pré-requisitos
-- Python 3.11 ou superior
-- pip (gerenciador de pacotes Python)
-
---
-
-#### 1. Clone o repositório
+### 📂 Estrutura de Diretórios
+A estrutura reflete agora uma arquitetura de microservice, pronta para receber a lógica de código nas novas camadas:
 
 ```bash
-git clone <url-do-repositorio>
-cd workout_api
-```
-
-#### 2. Crie e ative o ambiente virtual
-```bash
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-```
-
-#### 3.  Instale as dependências
-```bash
-pip install -r requirements.txt
-```
-#### 4. Execute a aplicação
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-
-
-### 🌐 Acessando a API
-
-A API estará disponível em:
-
-- API Local: http://localhost:8000
-
-- Documentação Interativa: http://localhost:8000/docs
-
-- Documentação Alternativa: http://localhost:8000/redoc
-
-
-### 📝 Exemplos de Uso
-Criar um Atleta
-
-```bash
-curl -X POST "http://localhost:8000/alunos" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "João Silva",
-    "cpf": "12345678900",
-    "idade": 25,
-    "peso": 75.5,
-    "altura": 1.80,
-    "sexo": "M",
-    "centro_treinamento_id": 1,
-    "categoria_id": 1
-  }'
-```
-
-Listar Atletas com Filtros
-
-```bash
-curl "http://localhost:8000/alunos?nome=João&page=1&size=10"
-```
-Buscar Atleta por ID
-```bash
-curl "http://localhost:8000/alunos/1"
-```
-### 🗃️ Estrutura do Banco de Dados
-
-Diagrama de Entidade-Relacionamento
-```text
-CentroTreinamento (1) -- (N) Categoria (1) -- (N) Aluno
-```
-
-Tabelas
-- centro_treinamento: Centros de treinamento
-- categoria: Categorias de competição
-- aluno: Atletas participantes
-
-### ⚙️ Variáveis de Ambiente
-Crie um arquivo .env na raiz do projeto:
-
-```bash
-DATABASE_URL=sqlite:///./workout.db
-```
-
-### 🚨 Tratamento de Erros
-A API retorna códigos de status HTTP apropriados:
-
-- 200 OK - Requisição bem-sucedida
-
-- 201 Created - Recurso criado com sucesso
-
-- 303 See Other - CPF duplicado (erro de integridade)
-
-- 404 Not Found - Recurso não encontrado
-
-- 422 Unprocessable Entity - Erro de validação
-
-### 📊 Paginação
-Todos os endpoints de listagem suportam paginação automática:
-
-```http
-GET /alunos?page=1&size=20
-```
-Resposta paginada:
-```json
-{
-  "items": [...],
-  "total": 100,
-  "page": 1,
-  "size": 20,
-  "pages": 5
-}
-```
-### 🔧 Desenvolvimento
-Estrutura do Projeto
-```text
 workout_api/
-├── app/
-│   ├── main.py
-│   ├── database.py
-│   ├── models.py
-│   ├── schemas.py
-│   ├── routes/
-│   │   ├── alunos.py
-│   │   ├── categorias.py
-│   │   └── centros_treinamento.py
-│   └── core/
-│       └── config.py
-├── requirements.txt
-├── .env
-└── README.md
+├── app/                  # Código-fonte do Microservice
+│   ├── api/
+│   │   └── routers/v1/   # Camada de Apresentação (Antigo routes/)
+│   ├── services/         # Camada de Lógica de Negócio (NOVA: Vazia)
+│   ├── repositories/     # Camada de Persistência (NOVA: Vazia)
+│   ├── database/         
+│   │   ├── connection.py # Conexão com o DB (Antigo database.py)
+│   │   └── models/       # Modelos SQLAlchemy (Antigo models.py)
+│   ├── schemas/          # Modelos de Dados Pydantic (Antigo schemas.py)
+│   └── core/             # Configurações e Exceções
+│       └── config.py     # Gerenciamento de Configurações
+└── requirements.txt
 ```
 
-Comandos Úteis
+<br>
 
-```bash
-# Executar testes
-python -m pytest
+### 🎯 Motivação da Estrutura
 
-# Verificar qualidade do código
-pylint app/
+| Camada | Diretório | Motivo da Separação (SoC) |
+| :--- | :--- | :--- |
+| **Routers** | `app/api/routers/` | Garantir que o endpoint apenas receba a requisição e delegue, mantendo o código limpo e focado em HTTP. |
+| **Services** | `app/services/` | Centralizar as regras de negócio complexas, como validações e orquestração de operações. |
+| **Repositories** | `app/repositories/` | Abstrair o acesso ao banco de dados (SQLAlchemy), isolando a lógica de negócio da tecnologia de persistência. |
 
-# Formatar código
-black app/
-```
+<br>
 
-###
-🤝 Contribuição
-1. Faça um fork do projeto
+## 🎯 Motivação da Estrutura
 
-2. Crie uma branch para sua feature (git checkout -b feature/AmazingFeature)
+| Categoria | Tecnologia | Status no Projeto |
+| :--- | :--- | :--- |
+| **Web Framework** | Fast API | Em uso |
+| **Persistência** | SQL Alchemy ORM | Em uso (SQL Lite) |
+| **Arquitetura** | Separação de Responsabilidades (SoC) | **Estrutura de Diretórios Implementada** |
 
-3. Commit suas mudanças (git commit -m 'Add some AmazingFeature')
+<br>
 
-4. Push para a branch (git push origin feature/AmazingFeature)
+## ➡️ Próximos Passos no Processo de Refatoração
+Refatoração do Core: Implementar Pydantic Settings no app/core/config.py e criar exceções de negócio customizadas.
 
-5. Abra um Pull Request
+Implementação de Camadas: Mover a lógica de negócio e persistência dos routers para as camadas de Service e Repository.
+
+Containerização: Criar o Dockerfile e o docker-compose.yml para PostgreSQL.
 
 
-## 📄 Licença
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
 
