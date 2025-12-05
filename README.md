@@ -12,7 +12,7 @@ Qualidade de Código: Implementar Tipagem Rigorosa (Type Hinting) e gerenciar co
 
 Containerização: Criar uma solução completa de Docker Compose (API + PostgreSQL).
 
-___________________________________________________________________________________________
+_______________________________________________________________________
 
 ## 🏗️ Estrutura Arquitetural Atual (Refatoração Concluída: 1/3)
 
@@ -51,7 +51,7 @@ workout_api/
 
 <br>
 
-## 🎯 Motivação da Estrutura
+## 🛠️ Tecnologias Atuais e Próximos Passos
 
 | Categoria | Tecnologia | Status no Projeto |
 | :--- | :--- | :--- |
@@ -61,13 +61,16 @@ workout_api/
 
 <br>
 
-## ➡️ Próximos Passos no Processo de Refatoração
+### ➡️ Próximos Passos no Processo de Refatoração
 Refatoração do Core: Implementar Pydantic Settings no app/core/config.py e criar exceções de negócio customizadas.
 
 Implementação de Camadas: Mover a lógica de negócio e persistência dos routers para as camadas de Service e Repository.
 
 Containerização: Criar o Dockerfile e o docker-compose.yml para PostgreSQL.
 
+## Qualidade do Código
+
+**Pydantic Settings**: Gerenciamento seguro de configuração, garantindo que as variáveis de ambiente (como DATABASE_URL) sejam lidas com tipagem rigorosa e priorizando as configurações do ambiente Docker.
 
 
 
