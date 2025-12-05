@@ -26,3 +26,5 @@ class Settings(BaseSettings):
         description="Chave secreta para autenticação."
     )
 
+# Instância única das configurações
+settings = Settings()
